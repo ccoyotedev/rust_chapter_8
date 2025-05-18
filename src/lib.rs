@@ -1,3 +1,5 @@
+extern crate std;
+
 pub mod averages {
     pub fn get_median(arr: &Vec<u32>) -> Option<u32> {
         let mut arr = arr.clone();
@@ -22,5 +24,17 @@ pub mod averages {
         } else {
             arr.get(length / 2).copied()
         }
+    }
+
+    pub fn get_mode(arr: &Vec<u32>) -> Option<u32> {
+        let mut map = std::collections::HashMap::new();
+
+        for number in arr {
+            let count = map.entry(number).or_insert(0);
+            *count += 1;
+        }
+
+        let max_value = map.iter().max_by_key(|entry| entry.1).unwrap();
+        return Some(**max_value.0);
     }
 }
