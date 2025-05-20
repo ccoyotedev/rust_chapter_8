@@ -38,3 +38,20 @@ pub mod averages {
         return Some(**max_value.0);
     }
 }
+
+pub mod pig_latin {
+    fn is_vowel(char: &char) -> bool {
+        let vowels = ['a', 'e', 'i', 'u', 'o'];
+
+        vowels.contains(char)
+    }
+
+    pub fn translate_string(str: String) -> String {
+        let words: Vec<&str> = str.split_whitespace().collect();
+        println!("{:?}", words);
+
+        for word in words {}
+
+        return String::new();
+    }
+}
