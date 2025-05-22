@@ -40,18 +40,36 @@ pub mod averages {
 }
 
 pub mod pig_latin {
+    pub fn translate_string(str: String) -> String {
+        let words: Vec<&str> = str.split_whitespace().collect();
+
+        let mut translated_string = String::new();
+        for word in words {
+            let translated_word = translate_word(word);
+            translated_string = format!("{translated_string}{translated_word} ");
+        }
+
+        return translated_string;
+    }
+
+    fn translate_word(word: &str) -> String {
+        let mut chars = word.chars();
+        let first_char = chars.nth(0).unwrap();
+
+        if is_vowel(&first_char) {
+            let translated_word = format!("{}-hey", word);
+            return translated_word;
+        } else {
+            let start = &word[1..];
+            let end = format!("{}ay", first_char);
+            let translated_word = format!("{start}-{end}");
+            return translated_word;
+        }
+    }
+
     fn is_vowel(char: &char) -> bool {
         let vowels = ['a', 'e', 'i', 'u', 'o'];
 
         vowels.contains(char)
-    }
-
-    pub fn translate_string(str: String) -> String {
-        let words: Vec<&str> = str.split_whitespace().collect();
-        println!("{:?}", words);
-
-        for word in words {}
-
-        return String::new();
     }
 }
