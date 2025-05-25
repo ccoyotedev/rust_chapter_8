@@ -73,3 +73,33 @@ pub mod pig_latin {
         vowels.contains(char)
     }
 }
+
+pub mod employee_database {
+    pub struct Employee {
+        name: String,
+        department: String,
+    }
+    pub enum Prompt {
+        Add(Employee),
+        Remove(Employee),
+        Get(Option<String>),
+    }
+
+    pub fn build_employee(name: String, department: String) -> Employee {
+        Employee { name, department }
+    }
+
+    pub fn handle_database_prompt(prompt: Prompt) {
+        match prompt {
+            Prompt::Add(employee) => add_to_database(employee),
+            Prompt::Remove(employee) => remove_from_database(employee),
+            Prompt::Get(department) => retrieve_from_database(department),
+        }
+    }
+
+    fn add_to_database(employee: Employee) {}
+
+    fn remove_from_database(employee: Employee) {}
+
+    fn retrieve_from_database(department: Option<String>) {}
+}

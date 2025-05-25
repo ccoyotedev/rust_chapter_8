@@ -1,10 +1,12 @@
 use std::io;
 
 use chapter_8::averages;
+use chapter_8::employee_database;
+use chapter_8::employee_database::Prompt;
 use chapter_8::pig_latin;
 
 fn main() {
-    question_2();
+    question_3();
 }
 
 fn question_1() {
@@ -39,5 +41,47 @@ fn question_2() {
         println!("{}", translation);
 
         break;
+    }
+}
+
+fn question_3() {
+    loop {
+        let mut input = String::new();
+
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+
+        let prompt = transform_input_to_prompt(input);
+
+        match prompt {
+            Some(prompt) => employee_database::handle_database_prompt(prompt),
+            None => {
+                println!("Please enter valid command");
+                continue;
+            }
+        }
+
+        break;
+    }
+}
+
+fn transform_input_to_prompt(input: String) -> Option<employee_database::Prompt> {
+    let parts: Vec<&str> = input.split_whitespace().collect();
+
+    match parts.as_slice() {
+        ["add", name, _, department] => {
+            let employee =
+                employee_database::build_employee(name.to_string(), department.to_string());
+            Some(Prompt::Add(employee))
+        }
+        ["remove", name, _, department] => {
+            let employee =
+                employee_database::build_employee(name.to_string(), department.to_string());
+            Some(Prompt::Remove(employee))
+        }
+        ["get", department] => Some(Prompt::Get(Some(department.to_string()))),
+        ["get"] => Some(Prompt::Get(None)),
+        _ => None,
     }
 }
