@@ -45,6 +45,7 @@ fn question_2() {
 }
 
 fn question_3() {
+    let mut db = employee_database::build_db();
     loop {
         let mut input = String::new();
 
@@ -52,17 +53,19 @@ fn question_3() {
             .read_line(&mut input)
             .expect("Failed to read line");
 
+        if input.trim().to_lowercase() == "quit" {
+            break;
+        }
+
         let prompt = transform_input_to_prompt(input);
 
         match prompt {
-            Some(prompt) => employee_database::handle_database_prompt(prompt),
+            Some(prompt) => db.handle_database_prompt(prompt),
             None => {
                 println!("Please enter valid command");
                 continue;
             }
         }
-
-        break;
     }
 }
 

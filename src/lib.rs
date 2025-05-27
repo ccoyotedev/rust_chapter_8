@@ -75,10 +75,13 @@ pub mod pig_latin {
 }
 
 pub mod employee_database {
+    use std::collections::HashMap;
+
     pub struct Employee {
         name: String,
         department: String,
     }
+
     pub enum Prompt {
         Add(Employee),
         Remove(Employee),
@@ -89,17 +92,36 @@ pub mod employee_database {
         Employee { name, department }
     }
 
-    pub fn handle_database_prompt(prompt: Prompt) {
-        match prompt {
-            Prompt::Add(employee) => add_to_database(employee),
-            Prompt::Remove(employee) => remove_from_database(employee),
-            Prompt::Get(department) => retrieve_from_database(department),
+    pub struct DB {
+        dictionary: HashMap<String, Vec<String>>,
+    }
+
+    impl DB {
+        pub fn handle_database_prompt(&mut self, prompt: Prompt) {
+            match prompt {
+                Prompt::Add(employee) => self.add_to_database(employee),
+                Prompt::Remove(employee) => self.remove_from_database(employee),
+                Prompt::Get(department) => self.retrieve_from_database(department),
+            };
+        }
+        fn add_to_database(&mut self, employee: Employee) {
+            let employees = self
+                .dictionary
+                .entry(employee.department)
+                .or_insert(Vec::new());
+            employees.push(employee.name);
+        }
+        fn remove_from_database(&mut self, employee: Employee) {
+            println!("Remove from database");
+        }
+        fn retrieve_from_database(&mut self, department: Option<String>) {
+            println!("{:?}", self.dictionary);
         }
     }
 
-    fn add_to_database(employee: Employee) {}
-
-    fn remove_from_database(employee: Employee) {}
-
-    fn retrieve_from_database(department: Option<String>) {}
+    pub fn build_db() -> DB {
+        DB {
+            dictionary: HashMap::new(),
+        }
+    }
 }
