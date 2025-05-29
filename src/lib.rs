@@ -126,7 +126,24 @@ pub mod employee_database {
                         None => println!("Department does not exist"),
                     }
                 }
-                None => println!("{:?}", self.dictionary),
+                None => {
+                    let keys: Vec<String> = self.dictionary.keys().cloned().collect();
+                    for key in keys {
+                        println!("{}", key.to_uppercase());
+                        println!("--------------------------------");
+                        let employees = self.dictionary.get_mut(&key);
+                        match employees {
+                            Some(emps) => {
+                                emps.sort();
+                                for employee in emps {
+                                    println!("{}", employee)
+                                }
+                            }
+                            None => println!("Department does not exist"),
+                        }
+                        println!("--------------------------------");
+                    }
+                }
             }
             println!("================================");
         }
