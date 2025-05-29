@@ -78,11 +78,6 @@ fn transform_input_to_prompt(input: String) -> Option<employee_database::Prompt>
                 employee_database::build_employee(name.to_string(), department.to_string());
             Some(Prompt::Add(employee))
         }
-        ["remove", name, _, department] => {
-            let employee =
-                employee_database::build_employee(name.to_string(), department.to_string());
-            Some(Prompt::Remove(employee))
-        }
         ["get", department] => Some(Prompt::Get(Some(department.to_string()))),
         ["get"] => Some(Prompt::Get(None)),
         _ => None,

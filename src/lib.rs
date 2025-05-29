@@ -84,7 +84,6 @@ pub mod employee_database {
 
     pub enum Prompt {
         Add(Employee),
-        Remove(Employee),
         Get(Option<String>),
     }
 
@@ -100,7 +99,6 @@ pub mod employee_database {
         pub fn handle_database_prompt(&mut self, prompt: Prompt) {
             match prompt {
                 Prompt::Add(employee) => self.add_to_database(employee),
-                Prompt::Remove(employee) => self.remove_from_database(employee),
                 Prompt::Get(department) => self.retrieve_from_database(department),
             };
         }
@@ -111,11 +109,26 @@ pub mod employee_database {
                 .or_insert(Vec::new());
             employees.push(employee.name);
         }
-        fn remove_from_database(&mut self, employee: Employee) {
-            println!("Remove from database");
-        }
         fn retrieve_from_database(&mut self, department: Option<String>) {
-            println!("{:?}", self.dictionary);
+            println!("================================");
+            match department {
+                Some(dep) => {
+                    let employees = self.dictionary.get_mut(&dep);
+                    match employees {
+                        Some(emps) => {
+                            println!("{}", dep.to_uppercase());
+                            println!("--------------------------------");
+                            emps.sort();
+                            for employee in emps {
+                                println!("{}", employee)
+                            }
+                        }
+                        None => println!("Department does not exist"),
+                    }
+                }
+                None => println!("{:?}", self.dictionary),
+            }
+            println!("================================");
         }
     }
 
